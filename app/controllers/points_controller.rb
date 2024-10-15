@@ -1,4 +1,12 @@
 class PointsController < ApplicationController
+    def index
+        @points = Point.all
+        # respond_to do |format|
+        #     format.html
+        #     format.json {render json: @points }
+        # end
+    end
+    
     def create
         @point = Point.new(point_params)
         if @point.save
@@ -7,6 +15,7 @@ class PointsController < ApplicationController
             render json: @point.errors, status: :unprocessable_entity
         end
     end
+
 
     private
 

@@ -1,0 +1,114 @@
+<h1>Points</h1>
+
+<div id = 'cy'></div>
+
+
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script>
+	cytoscape({
+		container: document.getElementById('cy'),
+
+		elements: {
+			nodes: [
+				<% @points.each do |i| %>
+				{
+					data: { id: <%= i.id %> }
+				},
+				<% end %>
+			],
+		},
+
+		style: [
+			{
+				selector: 'node',
+				style: {
+					'label': 'data(id)'
+				}
+			}
+		]
+
+	});
+
+		
+	</script>
+
+    <%# // document.addEventListener('DOMContentLoaded', function(){
+
+	// 	var cy = window.cy = cytoscape({
+	// 	container: document.getElementById('cy'),
+
+
+		// layout: {
+		// 	name: 'preset'
+		// },
+
+		// style: [
+		// 	{
+		// 		selector: 'node',
+		// 		style: {
+		// 			'label': 'data(id)'
+		// 			}
+		// 		},
+
+		// 		{
+		// 			selector: '.mid',
+		// 			style: {
+		// 				'width': 8,
+		// 				'height': 8,
+		// 				'label': ''
+		// 				}
+		// 			}
+		// 		],
+
+		// });
+
+  // API からデータを取得
+//   fetch('/points.json')
+//     .then(response => response.json()) // JSON データに変換
+//     .then(data => {
+//       // JSON データが配列として返されることを想定
+//       data.forEach(point=> {
+//         // 各レコードの start_point と end_point の値を取り出す
+//         console.log("ID:", point.id);
+//         console.log("Start Point:", point.x);  // [1, 2] や [5, 6]
+//         console.log("End Point:", point.y);      // [3, 4] や [7, 8]
+//       });
+
+//       // 例えば最初のレコードの start_point を HTML に表示
+//       const outputElement = document.getElementById('cy');
+//       cyElement.innerHTML = `First start point: ${data[0].x}`;
+//     })
+//     .catch(error => {
+//       console.error('Error:', error);
+//     });
+
+
+  			// const points = document.getElementById('cy1').value
+  			// points.forEach(function(point){
+			// 	console.log(point.id, point.x, point.y);
+			// 	cy.add({
+			// 		classes: 'automove-viewport',
+			// 		data: { id: 'Z' + point.id }
+			// 		position: {
+			// 			x: cy.position.point.x,
+			// 			y: cy.position.point.y
+			// 		}
+			// 	})
+			// });
+
+    // ここからデータベース内の点を取得して表示する
+	// 	fetch('/points')
+	// 	.then(response => response.json())
+	// 	.then(data => {
+	// 		console.log(data);
+	// 		const output = document.getElementById('output');
+    //         outputElement.innerHTML = `First point x: ${data[0].x}`
+	// 		// output.innerHTML = JSON.stringify(data);
+
+	// 		})
+	// 	.catch(error => {
+	// 		console.console.error('Error:', error);
+	// 		});
+	// // ここまで
+    // });
+	// }); %>
