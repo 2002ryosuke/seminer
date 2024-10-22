@@ -14,6 +14,7 @@ class PointsController < ApplicationController
         else
             render json: @point.errors, status: :unprocessable_entity
         end
+        # @points = Point.all
     end
 
 

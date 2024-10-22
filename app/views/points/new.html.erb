@@ -9,88 +9,132 @@
 		<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
 
 		<%# <script src="cytoscape-automove.js"></script> %>
-		<script>
-			document.addEventListener('DOMContentLoaded', function(){
+		
+		<script type='module'>
+		import { FetchRequest } from '@rails/request.js'
 
-				var cy = window.cy = cytoscape({
-					container: document.getElementById('cy'),
+		document.addEventListener('DOMContentLoaded', function(){
+		var cy = window.cy =
+			cytoscape({
+				container: document.getElementById('cy'),
 
-					layout: {
-						name: 'preset'
-					},
-
-					style: [
-						{
-							selector: 'node',
-							style: {
-								'label': 'data(id)'
-							}
-						},
-
-						{
-							selector: '.mid',
-							style: {
-								'width': 8,
-								'height': 8,
-								'label': ''
-							}
+				style: [
+					{
+						selector: 'node',
+						style: {
+							'label': 'data(id)',
+							'color': '#008b8b'
 						}
-					],
-
-				});
-
-				// // ここからデータベース内の点を取得して表示する
-				// document.addEventListener('DOMContentLoaded', function() {
-				// 	fetch('/points')
-				// 	.then(response => response.json())
-				// 	.then(data => {
-				// 		console.log(data);
-				// 		const output = document.getElementById('output');
-				// 		output.innerHTML = JSON.stringify(data);
-				// 	})
-				// 	.catch(error => {
-				// 		console.console.error('Error:', error);
-				// 	});
-				// });
-				// // ここまで
-
-
-				cy.on('tap', function( evt ){
-					var tgt = evt.target || evt.cyTarget; // 3.x || 2.x
-					const x = evt.position.x
-					const y = evt.position.y
-
-					if( tgt === cy ){
-						cy.add({
-							classes: 'automove-viewport',
-							data: { id: 'Z' + Math.round( Math.random() * 100 ) },
-							position: {
-								x: evt.position.x,
-								y: evt.position.y
-							}
-						});
 					}
-
-					// 座標を送信
-					fetch('/points', {
-						method:'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-						},
-						body: JSON.stringify({ point: {x: x, y: y} })
-					}).then(response => response.json())
-					  .then(data => console.log('Point saved', data))
-					  .catch(error => console.error('Error:', error));
-				});
-
-				cy.on('cxttap', 'node', function( evt ){
-					var tgt = evt.target || evt.cyTarget; // 3.x || 2.x
-
-					tgt.remove();
-				});
-
+				]
 			});
+
+
+			cy.on('click', async function( evt ){
+				var tgt = evt.target;
+				const x = evt.position.x
+				const y = evt.position.y
+
+				// if( tgt === cy ){
+				// 	fetch('/posits', {
+				// 		method: 'POST',
+				// 		headers: {
+				// 			'Content-Type': 'application.json',
+				// 			'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+				// 		},
+				// 		body: JSON.stringify({ point: {x: x, y: y} })
+				// 	}).then(response => response.json())
+				// 	  .then(data => console.log('Point saved', data))
+				// 	  .catch(error => console.error('Error:', error));
+				if ( tgt === cy ) {
+					// cyをタップした場合は、ノードを追加
+						const request = new FetchRequest('post', '/points', {
+          body: JSON.stringify({ point: { x: x, y: y } }),
+          contentType: 'application/json', // リクエストがJSONであることを指定
+        });
+		
+        const response = await request.perform();
+					  cy.add({
+						classes: 'automove-viewport',
+						group: 'nodes',
+						data: { id: 'Z' + Math.round( Math.random() * 100 ) },
+						position: {
+							x: evt.position.x,
+							y: evt.position.y
+						}
+					});
+				} else {
+					// ノードをタップした場合
+				};
+			});
+		});
+		
+			// document.addEventListener('DOMContentLoaded', function(){
+
+			// 	var cy = window.cy = cytoscape({
+			// 		container: document.getElementById('cy'),
+
+			// 		layout: {
+			// 			name: 'preset'
+			// 		},
+
+			// 		style: [
+			// 			{
+			// 				selector: 'node',
+			// 				style: {
+			// 					'label': 'data(id)'
+			// 				}
+			// 			},
+
+			// 			{
+			// 				selector: '.mid',
+			// 				style: {
+			// 					'width': 8,
+			// 					'height': 8,
+			// 					'label': ''
+			// 				}
+			// 			}
+			// 		],
+
+			// 	});
+
+			// 	cy.on('tap', function( evt ){
+			// 		var tgt = evt.target || evt.cyTarget; // 3.x || 2.x
+			// 		const x = evt.position.x
+			// 		const y = evt.position.y
+
+			// 		if( tgt === cy ){
+			// 			cy.add({
+			// 				classes: 'automove-viewport',
+			// 				data: { id: 'Z' + Math.round( Math.random() * 100 ) },
+			// 				position: {
+			// 					x: evt.position.x,
+			// 					y: evt.position.y
+			// 				}
+			// 			});
+			// 		}
+
+			// 		// 座標を送信
+			// 		fetch('/points', {
+			// 			method:'POST',
+			// 			headers: {
+			// 				'Content-Type': 'application/json',
+			// 				'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+			// 			},
+			// 			body: JSON.stringify({ point: {x: x, y: y} })
+			// 		}).then(response => response.json())
+			// 		  .then(data => console.log('Point saved', data))
+			// 		  .catch(error => console.error('Error:', error));
+			// 	});
+
+			// 	// 点の削除（２本指タップ）
+			// 	// cy.on('cxttap', 'node', function( evt ){
+			// 	// 	var tgt = evt.target || evt.cyTarget; // 3.x || 2.x
+
+			// 	// 	tgt.remove();
+			// 	// });
+
+			// });
 		</script>
 	</head>
 
@@ -98,6 +142,5 @@
 		<h1>cytoscape-automove demo</h1>
 
 		<div id="cy"></div>
-		</div>
 
 	</body>
