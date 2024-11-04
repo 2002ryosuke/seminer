@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # get 'lines/index'
+  # get 'lines/create'
+  # get 'lines/destory'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -8,4 +11,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "points#index"
   resources :points, only: [:index, :create]
+  resources :lines, only: [:create]
 end

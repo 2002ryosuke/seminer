@@ -13,6 +13,8 @@
 		<script type='module'>
 		import { FetchRequest } from '@rails/request.js'
 
+		let count_point = <%= @points.size %>;
+		let count_line = <%= @lines.size %>;
 		document.addEventListener('DOMContentLoaded', function(){
 		var cy = window.cy =
 			cytoscape({
@@ -22,8 +24,18 @@
 					nodes: [
 						<% @points.each do |i| %>
 						{
-							data: { id: <%= i.id %>},
+							data: { id: 'Z'+<%= i.id %>},
 							position: { x: <%= i.x %>, y: <%= i.y %> }
+						},
+						<% end %>
+					],
+					edges: [
+						// {
+						// 	data: {  source: 'Z1', target: 'Z2' }
+						// }
+						<% @lines.each do |i| %>
+						{
+							data: { id: <%= i.id %>, source: '<%= i.source %>', target: '<%= i.target %>' }
 						},
 						<% end %>
 					]
@@ -36,6 +48,16 @@
 							'label': 'data(id)',
 							'color': '#008b8b'
 						}
+					},
+
+					{
+						selector: 'edge',
+						style: {
+							'label': 'data(id)',
+							'color': '"008b8d',
+							// 'target-arrow-shape': 'triangle', 	有効グラフになる
+							'curve-style': 'bezier', //線を曲線にする
+						}
 					}
 				],
 				layout: {
@@ -43,8 +65,8 @@
 				}
 			});
 
-
-			cy.on('click', async function( evt ){
+			var nodes = [];
+			cy.on('click', function( evt ){
 				var tgt = evt.target;
 				const x = evt.position.x
 				const y = evt.position.y
@@ -61,24 +83,69 @@
 				// 	  .then(data => console.log('Point saved', data))
 				// 	  .catch(error => console.error('Error:', error));
 				if ( tgt === cy ) {
+					nodes = [];
+					count_point++;
 					// cyをタップした場合は、ノードを追加
+					
+					async function createPoint() {
 						const request = new FetchRequest('post', '/points', {
-          body: JSON.stringify({ point: { x: x, y: y } }),
-          contentType: 'application/json', // リクエストがJSONであることを指定
-        });
-		
-        const response = await request.perform();
-					  cy.add({
-						classes: 'automove-viewport',
-						group: 'nodes',
-						data: { id: 'Z' + Math.round( Math.random() * 100 ) },
-						position: {
-							x: evt.position.x,
-							y: evt.position.y
-						}
-					});
+         					body: JSON.stringify({ point: { x: x, y: y } }),
+          					contentType: 'application/json', // リクエストがJSONであることを指定
+        			});
+
+
+					const response = await request.perform()
+					if (response.ok) {
+						const body = await response.text
+					}
+				}
+				createPoint();
+
+				//点の作成
+				cy.add({
+					classes: 'automove-viewport',
+					group: 'nodes',
+					data: { id: 'Z' + count_point },
+					position: {
+						x: evt.position.x,
+						y: evt.position.y
+					}
+				});
 				} else {
 					// ノードをタップした場合
+				cy.nodes().once('click', function(e){
+  					var ele = e.target;
+					nodes.push(ele.id());
+					console.log(nodes);
+  					// console.log('clicked ' + ele.id());
+					if ( nodes.length == 2 ) {
+						count_line++;
+						async function createLine() {
+							const request = new FetchRequest('post', '/lines', {
+								body: JSON.stringify({ line: {source: nodes[0], target: nodes[1] } }),
+								contentType: 'application/json',
+							});
+							const response = await request.perform()
+							if (response.ok) {
+								const body = await response.text
+							}
+						}
+						createLine();
+
+						//線の作成
+						cy.add({
+							group: 'edges',
+							data: { id: count_line, source: nodes[0], target: nodes[1] }
+						});
+						nodes = [];
+					}
+				});
+				// var collection = cy.collection();
+				// cy.nodes().on('click', function(e){
+				// 	var clickedNode = e.target;
+
+				// 	collection
+				// });
 				};
 			});
 		});
