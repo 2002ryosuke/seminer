@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "points#index"
-  resources :points, only: [:index, :create]
+  resources :points, only: [:index, :create, :destroy]
+  # delete 'points/:id', to: 'points#destroy'
   resources :lines, only: [:create]
 end

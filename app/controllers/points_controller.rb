@@ -24,6 +24,14 @@ class PointsController < ApplicationController
         # end
     end
 
+    def destroy
+        @point = Point.find(params[:id])
+        @point.destroy
+
+        flash[:success] = 'Pointは正常に削除されました'
+        # redirect_to points_url
+    end
+
 
     private
 
