@@ -12,10 +12,12 @@
 
 ActiveRecord::Schema[7.1].define(version: 2024_10_29_091603) do
   create_table "lines", force: :cascade do |t|
-    t.string "source"
-    t.string "target"
+    t.integer "source_id", null: false
+    t.integer "target_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_lines_on_source_id"
+    t.index ["target_id"], name: "index_lines_on_target_id"
   end
 
   create_table "points", force: :cascade do |t|
@@ -25,4 +27,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_29_091603) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "lines", "points", column: "source_id"
+  add_foreign_key "lines", "points", column: "target_id"
 end

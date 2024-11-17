@@ -3,13 +3,16 @@ class LinesController < ApplicationController
   end
 
   def create
-    @line = Line.new(line_params)
+    source_point = Point.find(params[:line][:source_id])
+    target_point = Point.find(params[:line][:target_id])
+    @line = Line.new(source: source_point, target: target_point)
     # @line.save!
     if @line.save
       render json: @line, status: :created
     else
       render json: @line.errors, status: :unprocessable_entity
     end
+    redirect_to points_url
   end
 
   def destory

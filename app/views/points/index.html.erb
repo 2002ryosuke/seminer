@@ -114,9 +114,37 @@
   					// console.log('clicked ' + ele.id());
 					if ( nodes.length == 2 ) {
 						count_line++;
+						let nodes_num = []; 
+						//nodesの中のZをはずして、数字だけにする
+						for (let i = 0; i < nodes.length; i++) {
+							const node = nodes[i];
+							const node_num_arry = node.match(/\d+/); 
+							let [node_num] = node_num_arry;
+							nodes_num.push(node_num);
+						}
+						console.log(nodes_num);
+						
+						//node_numにある数字とPoint（データベース）のidに入れ替える
+						// function conversion(node_num) {
+						// // <% def conversion(node_num) %>
+						// 	const conversion_node = [];
+						// 	<% node_num.each do |n| %>
+						// 		<% @points.each do |i| %>
+						// 			<% if i.id == n %> 
+						// 				conversion_node.push(<%= i.id %>);
+						// 			<% end %>
+						// 		<% end %>
+						// 	<% end %>
+						// return conversion_node
+						// // <% end %>
+						// };
+						
+						// const conversion_node = conversion(nodes_num);
+						// console.log(conversion_node);
+
 						async function createLine() {
 							const request = new FetchRequest('post', '/lines', {
-								body: JSON.stringify({ line: {source: nodes[0], target: nodes[1] } }),
+								body: JSON.stringify({ line: {source_id: nodes_num[0], target_id: nodes_num[1] } }),
 								contentType: 'application/json',
 							});
 							const response = await request.perform()
@@ -132,6 +160,7 @@
 							data: { id: count_line, source: nodes[0], target: nodes[1] }
 						});
 						nodes = [];
+						nodes_num = [];
 					}
 				});
 				};

@@ -38,9 +38,5 @@ class PointsController < ApplicationController
     def point_params
         params.require(:point).permit(:x, :y)
     end
-
-    # def line_params
-    #     params.require(:line).permit(:source, :target)
-    # end
     
 end
