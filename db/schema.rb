@@ -10,19 +10,5 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_29_091603) do
-  create_table "lines", force: :cascade do |t|
-    t.integer "source", null: false
-    t.integer "target", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "points", force: :cascade do |t|
-    t.float "x"
-    t.float "y"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+ActiveRecord::Schema[7.1].define(version: 0) do
 end
