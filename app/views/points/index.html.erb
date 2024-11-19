@@ -13,7 +13,7 @@
 	<% if @points.size == 0 && @lines.size == 0 %>
 		<% count_point = 0 %>
 		<% count_line = 0 %>
-	<% elsif @points.size != nil && @lines.size == nil %>
+	<% elsif @points.size != 0 && @lines.size == 0 %>
 		<% count_point = @points.last.id %>
 		<% count_line = 0 %>
 	<% else %>
@@ -117,6 +117,7 @@
 					if (response.ok) {
 						const body = await response.text
 					}
+					window.location.reload();
 				}
 				createPoint();
 
