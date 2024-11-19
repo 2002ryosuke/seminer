@@ -9,8 +9,24 @@
 <script type='module'>
 	import { FetchRequest } from '@rails/request.js'
 
-	let count_point = <%= @points.size %>;
-	let count_line = <%= @lines.size %>;
+
+	<% if @points.size == 0 && @lines.size == 0 %>
+		<% count_point = 0 %>
+		<% count_line = 0 %>
+	<% elsif @points.size != nil && @lines.size == nil %>
+		<% count_point = @points.last.id %>
+		<% count_line = 0 %>
+	<% else %>
+		<% count_point = @points.last.id %>
+		<% count_line = @lines.last.id %>
+	<% end %>
+
+	let count_point = <%= count_point %>
+	let count_line = <%= count_line %>
+	
+	
+	<% lines_json = JSON.parse(@lines.to_json) %>	
+	
 	document.addEventListener('DOMContentLoaded', function(){
 		var cy = window.cy =
 		cytoscape({
@@ -26,12 +42,19 @@
 						<% end %>
 					],
 					edges: [
-						<% @lines.each do |i| %>
+						<% lines_json.each do |n| %>
 						{
-							data: { id: <%= i.id %>, source: '<%= i.source %>', target: '<%= i.target %>' }
+							data: { id: <%= n.values[0] %>, source: 'Z' + <%= n.values[1].values[0] %>, target: 'Z' + <%= n.values[2].values[0] %>}
 						},
 						<% end %>
 					]
+					// edges: [
+					// 	<% @lines.each do |i| %>
+					// 	{
+					// 		data: { id: <%= i.id %>, source: 'Z'+<%= i.source %>, target: 'Z'+<%= i.target %> }
+					// 	},
+					// 	<% end %>
+					// ]
 				},
 
 				style: [
@@ -57,7 +80,10 @@
 					name: 'preset',
 				}
 			});
-
+			var a = <%= raw @lines.to_json %>
+			// <% @lines.each do |n| %>
+			// 	id: <%= n.id %>, source: <%= n.source %>, target: <%= n.target %>;
+			// <% end %>
 			var nodes = [];
 			cy.on('click', function( evt ){
 				var tgt = evt.target;

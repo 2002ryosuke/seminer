@@ -12,7 +12,8 @@ class LinesController < ApplicationController
     else
       render json: @line.errors, status: :unprocessable_entity
     end
-    redirect_to points_url
+
+    # redirect_to points_url
   end
 
   def destory
