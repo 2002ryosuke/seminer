@@ -3,3 +3,10 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 import "@rails/request.js"
+
+// import { initializeGraph } from "./graph/cytoscape";
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     const graphData = JSON.parse(document.getElementById("graph-data").textContent);
+//     const cy = initializeGraph(graphData);
+// });

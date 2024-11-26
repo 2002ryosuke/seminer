@@ -24,6 +24,12 @@ class PointsController < ApplicationController
         # end
     end
 
+    def other
+        @points = Point.all
+        @lines = Line.all
+    end
+
+
     def destroy
         @point = Point.find(params[:id])
         @point.destroy
