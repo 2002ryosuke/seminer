@@ -1,0 +1,58 @@
+
+<%# TODO:頂点の集合、辺の集合、それぞれの頂点の次数、辺の長さ、（重みの計算）
+頂点の集合 %>
+<% points = [] %>
+<% @points.each do |i| %> 
+    <% points << i.id %>
+<% end %>
+<% lines = [] %>
+<% @lines.each do |n| %>
+    <% lines << [n.source.id, n.target.id] %>
+<% end %>
+<% lines_dis = [] %>
+<% @lines.each do |n| %> 
+    <% lines_dis <<'Z'+n.source.id.to_s+', Z'+n.target.id.to_s %> 
+<% end %>
+
+<h1>作成したグラフの詳細</h1>
+<div>
+    <ul>
+        <li>頂点の集合, V=&lbrace;
+        <% points.each do |i| %> 
+            <%= 'Z'+i.to_s %>
+        <% end %>
+         &rbrace;</li>
+        <li>辺の集合, E=&lbrace;
+        <% lines_dis.each do |n| %>
+            &lbrace; <%= n %> &rbrace;
+        <% end %>
+        &rbrace;</li>
+    </ul>
+</div>
+
+<div>
+    <p>それぞれの頂点の次数</p>
+    <% degree = {} %>
+    <% count = 0 %>
+    <% n = 0 %>
+    <% while points.size > n %>
+        <% points.each do |point| %>
+            <% count = 0 %>
+            <% lines.each do |line| %>
+                <% line.each do |p| %>
+                    <% if point == p %>
+                        <% count +=1 %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% degree[point] = count %>
+        <% end %>
+    <% n +=1 %>
+    <% end %>
+
+    <ul>
+        <% points.each do |point| %>
+        <li>頂点:Z<%= point %>、次数:<%= degree[point] %></li>
+        <% end %>
+    </ul>
+</div>

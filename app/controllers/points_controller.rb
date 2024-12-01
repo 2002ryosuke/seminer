@@ -24,7 +24,7 @@ class PointsController < ApplicationController
         # end
     end
 
-    def other
+    def detail
         @points = Point.all
         @lines = Line.all
     end

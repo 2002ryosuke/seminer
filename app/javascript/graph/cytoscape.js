@@ -63,6 +63,7 @@ export async function createLine(line_source, line_target) {
      if (response.ok) {
         const body = await response.text
     }
+    window.location.reload();
 };
 
 export async function deletePoint(point_delete) {

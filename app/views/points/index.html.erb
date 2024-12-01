@@ -1,7 +1,9 @@
-<h1>Points</h1>
-<h2><%= @points.class %></h2>
+<h1>create graph</h1>
+<h2>使い方</h2>
+<p>点の作成: 1回クリック<br>線の作成: 繋ぎたい点を1回ずつクリック<br>点の削除: 2本指でクリック</p>
 
-<div id = 'cy'></div>
+<div id='select_node'></div>
+<div id='cy'></div>
 
 <script type="module">
 	import { initializeGraph } from "graph/cytoscape";
@@ -10,6 +12,8 @@
 	import { deletePoint } from "graph/cytoscape";
 	import { addNode } from "graph/cytoscape";
 	import { addLine } from "graph/cytoscape";
+	import { addElement } from "graph/click_node";
+	import { changeElement } from "graph/click_node"
 
 	document.addEventListener("DOMContentLoaded", function () {
     const initialData = {
@@ -21,7 +25,7 @@
 
 let count_point = <%= @points.size %>
 let count_line = <%= @lines.size %>
-var nodes = [];
+let nodes = [];
 
 
 cy.on('click', function( evt ){
@@ -39,9 +43,15 @@ cy.on('click', function( evt ){
 		cy.nodes().once('click', function( e ){
 			var ele = e.target;
 			nodes.push(ele.id());
+			// クリックしたnodeが画面に表示される
+			addElement(ele.id());
+			console.log (nodes);
+
 			if ( nodes.length == 2 ) {
 				count_line++;
 				let nodes_num = [];
+				//クリックされたnodeを示していたところに、辺を作成！と表示する
+				changeElement(nodes);
 				//nodesの中のZをはずして、数字だけにする
 				for (let i = 0; i < nodes.length; i++) {
 					const node = nodes[i];
@@ -53,7 +63,7 @@ cy.on('click', function( evt ){
 
 				createLine(nodes_num[0], nodes_num[1]);
 				addLine(cy, count_line, nodes[0], nodes[1]);
-				modes=[];
+				nodes=[];
 				nodes_num = [];
 			}
 		});
