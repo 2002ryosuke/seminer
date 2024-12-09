@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "points#index"
   get "points/detail", to: 'points#detail'
+  get "points/side_distance", to: 'points#side_distance'
   resources :points, only: [:index, :create, :destroy]
   # delete 'points/:id', to: 'points#destroy'
   resources :lines, only: [:create]

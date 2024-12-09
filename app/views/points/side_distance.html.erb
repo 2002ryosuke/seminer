@@ -1,0 +1,40 @@
+<h1>辺の距離</h1>
+<h2>使い方</h2>
+<p>頂点を選択し、任意の方向にカーソルを移動させる</p>
+
+<p id = "calculation"></p>
+<div id ="cy"></div>
+
+<script type="module">
+  import { initializeGraph } from "graph/cytoscape";
+  import { calculation_point, calculation_point_line, initialize_cal } from "calculation/distance";
+  import { addElement } from "graph/click_node";
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const initialData = {
+      points: <%= raw @points.to_json %>,
+      lines: <%= raw @lines.to_json %>
+    };
+	
+    const cy = initializeGraph(initialData);
+    // const select = document.getElementById("calculation");
+    console.log(calculation_point(initialData));
+    const cal = calculation_point(initialData)
+    const select = document.getElementById("calculation");
+
+    initialize_cal(initialData.lines, cal, select);
+
+    //TODO: ５頂点までの定形フレームワーク判定
+
+
+
+    cy.on('dragfree', 'node', () => {
+      const inner = calculation_point_line(cy);
+      select.innerHTML = inner;
+    });
+
+  });
+
+  
+
+</script>

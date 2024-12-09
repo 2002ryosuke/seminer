@@ -15,16 +15,14 @@ class PointsController < ApplicationController
         else
             render json: @point.errors, status: :unprocessable_entity
         end
-        
-        # @line = Line.new(line_params)
-        # if @line.save
-        #     render json: @line, status: :create
-        # else
-        #  render json: @line.errors, status: :unprocessable_entity
-        # end
     end
 
     def detail
+        @points = Point.all
+        @lines = Line.all
+    end
+
+    def side_distance
         @points = Point.all
         @lines = Line.all
     end
@@ -35,9 +33,7 @@ class PointsController < ApplicationController
         @point.destroy
 
         flash[:success] = 'Pointは正常に削除されました'
-        # redirect_to points_url
     end
-
 
     private
 

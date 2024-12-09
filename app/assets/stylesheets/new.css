@@ -1,20 +1,28 @@
-body {
+/* body {
     font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
     font-size: 14px;
-}
+} */
 
 #cy {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 999;
-}
+    width: 800px;
+    height: 700px;
+    display: block;
+    border: solid, black;
+  }
 
-h1 {
+/* div#cy {
+    position: absolute;
+    left: 0px;
+    top: 175px;
+    bottom: 0px;
+    right: 0px;
+    border: solid, black;
+    z-index: 999;
+} */
+
+/* h1 {
     opacity: 0.5;
     font-size: 1em;
     font-weight: bold;
-}
+} */
 
