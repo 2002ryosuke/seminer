@@ -10,6 +10,14 @@
     border: solid, black;
   }
 
+  #select_node {
+    position: fixed; 
+    right: 10px;
+    top: 500px;
+    padding: 6px 40px;
+    border: solid black;
+  }
+
 /* div#cy {
     position: absolute;
     left: 0px;

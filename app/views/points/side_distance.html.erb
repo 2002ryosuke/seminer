@@ -2,6 +2,7 @@
 <h2>使い方</h2>
 <p>頂点を選択し、任意の方向にカーソルを移動させる</p>
 
+<p id = "framework"></p>
 <p id = "calculation"></p>
 <div id ="cy"></div>
 
@@ -9,6 +10,7 @@
   import { initializeGraph } from "graph/cytoscape";
   import { calculation_point, calculation_point_line, initialize_cal } from "calculation/distance";
   import { addElement } from "graph/click_node";
+  import { simple_graph, jug_end_isolated, judgment_fixed } from "graph/framework";
 
   document.addEventListener("DOMContentLoaded", function () {
     const initialData = {
@@ -18,15 +20,25 @@
 	
     const cy = initializeGraph(initialData);
     // const select = document.getElementById("calculation");
-    console.log(calculation_point(initialData));
-    const cal = calculation_point(initialData)
+    const cal = calculation_point(initialData);
     const select = document.getElementById("calculation");
 
     initialize_cal(initialData.lines, cal, select);
 
     //TODO: ５頂点までの定形フレームワーク判定
-
-
+    const select_work = document.getElementById("framework");
+    console.log(initialData);
+    console.log(jug_end_isolated(initialData, select_work));
+    if (simple_graph(initialData, select_work)){
+      if (jug_end_isolated(initialData, select_work)){
+        console.log('aaa');
+        if (judgment_fixed(initialData, select_work)){
+        };
+      };
+    };
+    console.log(initialData.lines[0].source);
+    
+    
 
     cy.on('dragfree', 'node', () => {
       const inner = calculation_point_line(cy);

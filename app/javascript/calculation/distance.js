@@ -1,6 +1,6 @@
 export function calculation_point(data){
     const cal_ob = {};
-    console.log(data.lines[0].source.x);
+    // console.log(data.lines[0].source.x);
     data.lines.forEach(line => {
         const cal_x = (line.source.x-line.target.x) ** 2;
         const cal_y = (line.source.y-line.target.y) ** 2;
@@ -19,7 +19,7 @@ export function initialize_cal(lines, cal, select){
 export function calculation_point_line(cy){
     const inner_array =[];
     cy.edges().forEach(line => {
-        console.log(line);
+        // console.log(line);
         const source = line.source();
         const target = line.target();
 
@@ -29,7 +29,7 @@ export function calculation_point_line(cy){
         
         inner_array.push(` id: ${line._private.data.id}=>距離: ${length}`);
     });
-        console.log(inner_array);
+        // console.log(inner_array);
         const inner = inner_array.join(",");
         return inner;
         // line.data('length', `距離: ${length}`); // エッジのラベルを更新

@@ -34,20 +34,16 @@
     <p>それぞれの頂点の次数</p>
     <% degree = {} %>
     <% count = 0 %>
-    <% n = 0 %>
-    <% while points.size > n %>
-        <% points.each do |point| %>
-            <% count = 0 %>
-            <% lines.each do |line| %>
-                <% line.each do |p| %>
-                    <% if point == p %>
-                        <% count +=1 %>
-                    <% end %>
+    <% points.each do |point| %>
+        <% count = 0 %>
+        <% lines.each do |line| %>
+            <% line.each do |p| %>
+                <% if point == p %>
+                    <% count +=1 %>
                 <% end %>
             <% end %>
-        <% degree[point] = count %>
         <% end %>
-    <% n +=1 %>
+    <% degree[point] = count %>
     <% end %>
 
     <ul>
