@@ -6,6 +6,8 @@
 <p id = "calculation"></p>
 <div id ="cy"></div>
 
+<%= link_to 'グラフを作成するページに戻る', "/", class: "create", data: {"turbolinks" => false} %>
+
 <script type="module">
   import { initializeGraph } from "graph/cytoscape";
   import { calculation_point, calculation_point_line, initialize_cal } from "calculation/distance";
