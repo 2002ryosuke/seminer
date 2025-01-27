@@ -6,11 +6,13 @@
 <p id = "calculation"></p>
 <div id ="cy"></div>
 
+<%= link_to 'グラフを作成するページに戻る', "/", class: "create", data: {"turbolinks" => false} %>
+
 <script type="module">
   import { initializeGraph } from "graph/cytoscape";
   import { calculation_point, calculation_point_line, initialize_cal } from "calculation/distance";
   import { addElement } from "graph/click_node";
-  import { simple_graph, jug_end_isolated, judgment_fixed } from "graph/framework";
+  import { simple_graph, top, jug_end_isolated, judgment_fixed } from "graph/framework";
 
   document.addEventListener("DOMContentLoaded", function () {
     const initialData = {
@@ -29,10 +31,12 @@
     const select_work = document.getElementById("framework");
     console.log(initialData);
     console.log(jug_end_isolated(initialData, select_work));
-    if (simple_graph(initialData, select_work)){
-      if (jug_end_isolated(initialData, select_work)){
-        console.log('aaa');
-        if (judgment_fixed(initialData, select_work)){
+    if (top(initialData, select_work)){
+      if (simple_graph(initialData, select_work)){
+        if (jug_end_isolated(initialData, select_work)){
+          console.log('aaa');
+          if (judgment_fixed(initialData, select_work)){
+          };
         };
       };
     };
