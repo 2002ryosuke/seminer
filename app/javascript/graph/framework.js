@@ -15,6 +15,18 @@ function degree(data) { //次数の表示
     return degree;
 };
 
+export function top(data, select_work) {
+    if (data.lines.length == 0){
+        select_work.innerHTML = '変わる物がないため、定形フレームワークとなる';
+        return false;
+    } else if (data.points.length == 2 && data.lines.length == 1 ){
+        select_work.innerHTML = '変わる物がないため、定形フレームワークとなる';
+        return false;
+    };
+    return true;
+} 
+
+
 export function simple_graph(data, select_work) { //単純グラフの判定
     const lines_array = [];
     let line_array = [];
@@ -43,16 +55,24 @@ export function simple_graph(data, select_work) { //単純グラフの判定
 }
 
 export function jug_end_isolated(data, select_work) { //端点と孤立点の判定
+    let count1 = 0;
+    let count2 = 0;
     const degree_point = Object.values(degree(data));
     for (let i= 0; i < degree_point.length; i++){
         if (degree_point[i] == 1){
-            select_work.innerHTML = "端点が存在するため、定形フレームワークではない！";
-            return false;
+            count1++;
         } else if (degree_point[i] == 0){
-            select_work.innerHTML = "孤立点が存在するため、定形フレームワークではない！";
-            return false;
+            count2++;
         };
     };
+
+    if (count2 >= 1){
+        select_work.innerHTML = "孤立点が存在するため、連結ではない！";
+        return false;
+    } else if (count1 >= 1){
+        select_work.innerHTML = "端点が存在するため、定形フレームワークではない！";
+        return false;
+    }
     return true;
 }
 
