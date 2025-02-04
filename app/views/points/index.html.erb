@@ -2,7 +2,7 @@
 <h2>使い方</h2>
 <p>頂点の作成: 1回クリック, 辺の作成: 繋ぎたい頂点を1回ずつクリック, 頂点の削除: 2本指でクリック</p>
 
-<div id='select_node'></div>
+<div id='select_node'><%= @rank %></div>
 <%= link_to "詳細ページ（次数など）", "/points/detail", class: "detail" %>
 <%= link_to "定形フレームワークと距離", "/points/side_distance", data: {"turbolinks" => false}, class: "side_distance" %>
 <div id='cy'></div>
