@@ -141,6 +141,62 @@ class PointsController < ApplicationController
         # end
     # end
 
+    def degree(point_num, line_num)
+      points = []
+      lines = []
+
+      point_num.each do |point|
+        points << point.id
+      end
+
+      line_num.each do |line|
+        line_f = []
+        line_f << line.source.id
+        line_f << line.target.id
+        lines << line_f
+      end
+
+      degree = {}
+      count = 0
+
+      points.each do |point|
+        count = 0
+        lines.each do |line|
+          line.each do |p|
+            if point == p
+              count += 1
+            end
+          end
+        end
+        degree[point] = count
+    end
+    return degree
+  end
+
+
+  def isolated_point(points, lines)
+  degree = degree(points, lines)
+      count = 0
+      count1 = 0
+      p degree
+      points.each do |point|
+        if degree[point.id] == 0
+          count += 1
+        elsif degree[point.id] == 1
+          count1 += 1
+        end
+      end
+      p count
+
+      if points.size == 1
+        return 1 #孤立点が存在している
+      elsif count != 0
+        return 2 #連結グラフではない
+      elsif lines.size != 1 && count1 >= 1
+        return 3 #連結グラフではない
+      end
+  end
+
 
     def distance(points, lines) #定形フレームワークの判定を行う
         m = []
@@ -170,17 +226,23 @@ class PointsController < ApplicationController
         i = Matrix[*m]
         # rational_matrix = i.map { |x| x.to_r }
         
-        b = matrix_rank(i)
+        # b = matrix_rank(i)
         r = i.rank 
-        p b
+        # p b
         p r
 
-        if (2 * n - 3 == r)||(r == 1)
-            word = '定形である'
+        if isolated_point(points, lines) == 1
+          return '孤立点で定形である'
+        elsif isolated_point(points, lines) == 2
+          return '連結グラフではない'
+        elsif isolated_point(points, lines) == 3
+          return '端点が存在する もしくわ 連結グラフではない'
+        elsif (2 * n - 3 == r)||(r == 1)
+            return '定形である'
         elsif (2 * n - 3 > r)
-            word = '変形する'
+            return '変形する'
         else
-            word = '判定出来ませんでした'
+            return '判定出来ませんでした'
         end
         
     end
